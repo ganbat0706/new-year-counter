@@ -579,6 +579,288 @@ body {
   display: block;
 }
 
+/* ───────────────────────────────────────────────────────────────
+   Гол. Усны өнгө улирлын палитраас, тусгал нь цагийн үеэс (`--d-sun`,
+   `--d-night`) хамаарна. Өвөлд урсгал зогсож мөс болно.
+   ─────────────────────────────────────────────────────────────── */
+
+.river-bed {
+  background-color: var(--s-mid);
+  background-image: linear-gradient(
+    to bottom,
+    rgb(var(--s-ground) / 0.16),
+    rgb(var(--s-glow) / 0.12) 45%,
+    rgb(var(--s-ground) / 0.22)
+  );
+}
+
+/* Нар тусах туяа — өдөр тод, шөнө сарны сулхан гэрэл */
+.river-sheen {
+  background-image: radial-gradient(
+    50% 120% at 50% 0%,
+    rgb(var(--s-glow) / 0.55),
+    transparent 70%
+  );
+  opacity: calc(0.22 + 0.5 * var(--d-sun) + 0.14 * var(--d-night));
+  transition: opacity 900ms ease;
+}
+
+.river-flow {
+  animation: river-drift linear infinite;
+}
+
+@keyframes river-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(12%);
+  }
+}
+
+.river-bank {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(var(--s-ground) / 0.3),
+    transparent
+  );
+}
+
+/* Мөс — зөвхөн өвөлд. Урсгал зогсож, гадаргуу цайрч гялтганана. */
+.river-ice {
+  opacity: 0;
+  background-image:
+    linear-gradient(
+      100deg,
+      rgb(var(--s-ground) / 0.3) 0%,
+      rgb(var(--s-ground) / 0.08) 28%,
+      rgb(var(--s-ground) / 0.26) 52%,
+      rgb(var(--s-ground) / 0.06) 78%,
+      rgb(var(--s-ground) / 0.24) 100%
+    ),
+    linear-gradient(to bottom, rgb(205 235 255 / 0.22), rgb(205 235 255 / 0.06));
+  transition: opacity 900ms ease;
+}
+
+[data-season="winter"] .river-ice {
+  opacity: 1;
+}
+
+[data-season="winter"] .river-flow {
+  animation-play-state: paused;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Цасан хүн ба хүүхдүүд (зөвхөн өвөл). Нэг 24 секундын мөчлөгт
+   бөмбөрөг нэг нэгээр тавигдаж, эцэст нь малгай, нүүр, гар нэмэгдэнэ.
+   Суурь төлөв = бүрэн босгосон цасан хүн, тиймээс анимаци унтарсан
+   үед ч бүтэн харагдана.
+   ─────────────────────────────────────────────────────────────── */
+
+.snow-ball {
+  background-color: rgb(var(--s-ground) / 0.93);
+  box-shadow:
+    inset -0.6vh -0.4vh 1.2vh rgb(var(--s-near) / 0.25),
+    0 0 2vh rgb(var(--s-ground) / 0.35);
+}
+
+.snow-ball-base {
+  animation: snowfolk-base 24s ease-in-out infinite;
+}
+.snow-ball-mid {
+  animation: snowfolk-mid 24s ease-in-out infinite;
+}
+.snow-ball-top {
+  animation: snowfolk-top 24s ease-in-out infinite;
+}
+.snow-face {
+  animation: snowfolk-face 24s ease-in-out infinite;
+}
+.snow-hat {
+  animation: snowfolk-hat 24s ease-in-out infinite;
+}
+.snow-arms {
+  animation: snowfolk-arms 24s ease-in-out infinite;
+}
+.snow-kid-a {
+  animation: snowfolk-kid-a 24s ease-in-out infinite;
+}
+.snow-kid-b {
+  animation: snowfolk-kid-b 24s ease-in-out infinite;
+}
+.snow-roll {
+  background-color: rgb(var(--s-ground) / 0.9);
+  animation: snowfolk-roll 24s ease-in-out infinite;
+}
+
+@keyframes snowfolk-base {
+  0%,
+  20% {
+    opacity: 0;
+    transform: translateY(40%) scale(0.5);
+  }
+  26%,
+  93% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+@keyframes snowfolk-mid {
+  0%,
+  36% {
+    opacity: 0;
+    transform: translateY(-60%) scale(0.5);
+  }
+  42%,
+  93% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+@keyframes snowfolk-top {
+  0%,
+  50% {
+    opacity: 0;
+    transform: translateY(-80%) scale(0.5);
+  }
+  56%,
+  93% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+@keyframes snowfolk-face {
+  0%,
+  62% {
+    opacity: 0;
+  }
+  68%,
+  93% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes snowfolk-hat {
+  0%,
+  70% {
+    opacity: 0;
+    transform: translateY(-160%) rotate(-18deg);
+  }
+  76%,
+  93% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes snowfolk-arms {
+  0%,
+  78% {
+    opacity: 0;
+    transform: scaleX(0.3);
+  }
+  84%,
+  93% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Зүүн хүүхэд: бөмбөрөг түлхэж баруун тийш явна, дараа нь баярлан үсэрнэ. */
+@keyframes snowfolk-kid-a {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(150%, 0);
+  }
+  30% {
+    transform: translate(120%, 0);
+  }
+  80% {
+    transform: translate(110%, 0);
+  }
+  85% {
+    transform: translate(110%, -16%);
+  }
+  90% {
+    transform: translate(110%, 0);
+  }
+  95% {
+    transform: translate(110%, -11%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* Баруун хүүхэд: малгай авчирч, дараа нь хамт үсэрнэ. */
+@keyframes snowfolk-kid-b {
+  0%,
+  60% {
+    transform: translate(0, 0);
+  }
+  72% {
+    transform: translate(-70%, 0);
+  }
+  82% {
+    transform: translate(-40%, 0);
+  }
+  87% {
+    transform: translate(-40%, -15%);
+  }
+  92% {
+    transform: translate(-40%, 0);
+  }
+  97% {
+    transform: translate(-40%, -9%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* Өнхрөх бөмбөрөг — доод бөмбөрөг тавигдах мөчид алга болно. */
+@keyframes snowfolk-roll {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(0.6) rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(190%) scale(1) rotate(620deg);
+  }
+  24%,
+  100% {
+    opacity: 0;
+    transform: translateX(190%) scale(1) rotate(620deg);
+  }
+}
+
 /* Улирал сонгох товчнууд */
 .pill {
   transition:

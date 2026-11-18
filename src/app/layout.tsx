@@ -5,6 +5,7 @@ import {
   DAYPART_KEYS,
   DAYPART_STORAGE_KEY,
 } from "@/lib/dayparts";
+import { DEFAULT_SOUND, SOUND_STORAGE_KEY } from "@/lib/sound";
 import {
   SEASON_BY_MONTH,
   SEASON_KEYS,
@@ -58,6 +59,13 @@ const DAYPART_SCRIPT = `(function(){try{var r=document.documentElement,s=${JSON.
   DAYPART_KEYS,
 )}.indexOf(v)>-1){s=v;d="manual"}r.setAttribute("data-daypart",s);r.setAttribute("data-daypart-mode",d)}catch(e){}})()`;
 
+/** Дууны горим — зөвхөн хадгалсан сонголтыг сэргээнэ (анхдагч нь дуугүй). */
+const SOUND_SCRIPT = `(function(){try{var r=document.documentElement,v=localStorage.getItem(${JSON.stringify(
+  SOUND_STORAGE_KEY,
+)});r.setAttribute("data-sound",v==="on"?"on":${JSON.stringify(
+  DEFAULT_SOUND,
+)})}catch(e){}})()`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -66,13 +74,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-season-mode="auto"
       data-daypart="night"
       data-daypart-mode="auto"
+      data-sound="off"
       suppressHydrationWarning
       className={`${sora.variable} ${inter.variable} h-full antialiased`}
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `${SEASON_SCRIPT};${DAYPART_SCRIPT}`,
+            __html: `${SEASON_SCRIPT};${DAYPART_SCRIPT};${SOUND_SCRIPT}`,
           }}
         />
       </head>

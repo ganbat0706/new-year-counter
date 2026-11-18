@@ -8,7 +8,9 @@ import {
 import { Garland } from "@/components/scene/Garland";
 import { Orbs } from "@/components/scene/Orbs";
 import { Particles, type ParticleLayer } from "@/components/scene/Particles";
+import { River } from "@/components/scene/River";
 import { Sky } from "@/components/scene/Sky";
+import { Snowfolk } from "@/components/scene/Snowfolk";
 import {
   Forest,
   Grass,
@@ -101,6 +103,7 @@ function SpringScene() {
       <Hills />
       <Forest layers={forestLayers(5_201, "blossom", [0.2, 0.34, 0.5])} />
       <Ground height="15vh" />
+      <River seed={5_701} bottom="13vh" height="8vh" />
       <Grass seed={5_301} count={46} />
       <Particles shape="petal" layers={fallLayers(5_401, 1.6)} />
       <Orbs seed={5_501} count={10} />
@@ -118,6 +121,7 @@ function SummerScene() {
       <Hills />
       <Forest layers={forestLayers(6_301, "leafy", [0.16, 0.26, 0.36])} />
       <Ground height="16vh" />
+      <River seed={6_701} bottom="14vh" height="9vh" />
       <Grass seed={6_401} count={58} />
       <Particles shape="mote" layers={fallLayers(6_501, 1).slice(0, 2)} />
       <Orbs seed={6_601} count={22} mode="firefly" />
@@ -135,6 +139,7 @@ function AutumnScene() {
       <Forest layers={forestLayers(7_301, "leafy", [0.3, 0.42, 0.55], "bare")} />
       <Mist seed={7_401} count={4} />
       <Ground height="17vh" />
+      <River seed={7_701} bottom="15vh" height="8vh" />
       <Particles shape="leaf" layers={fallLayers(7_501, 1.7)} />
       <Orbs seed={7_601} count={12} />
     </>
@@ -152,6 +157,8 @@ function WinterScene() {
       <Sun x="70%" y="64%" size={8} />
       <Forest layers={forestLayers(8_201, "pine", [0, 0, 0])} />
       <Ground height="16vh" />
+      <River seed={8_701} bottom="14vh" height="8vh" />
+      <Snowfolk />
       <Particles shape="snow" layers={fallLayers(8_301, 1)} />
       <Orbs seed={8_401} count={14} />
     </>
