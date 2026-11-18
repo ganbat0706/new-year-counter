@@ -584,6 +584,17 @@ body {
    `--d-night`) хамаарна. Өвөлд урсгал зогсож мөс болно.
    ─────────────────────────────────────────────────────────────── */
 
+/* Дээд ирмэг нь хэээр рүү уусаж, доошоо тодорно — хөндлөн зурвас биш,
+   алсын гол мэт харагдана. */
+.river {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(0 0 0 / 0.65) 22%,
+    rgb(0 0 0 / 1) 55%
+  );
+}
+
 .river-bed {
   background-color: var(--s-mid);
   background-image: linear-gradient(
