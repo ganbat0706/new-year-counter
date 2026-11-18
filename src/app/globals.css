@@ -484,6 +484,20 @@ body {
    `--d-*` хувьсагчдыг доорх давхаргууд уншина.
    ─────────────────────────────────────────────────────────────── */
 
+/* Анхдагч = шөнө. `data-daypart` байхгүй тохиолдолд л хүчинтэй: доорх
+   блокууд ижил жинтэй тул дарааллаараа дараад явна. */
+:root {
+  --d-wash: linear-gradient(
+    to bottom,
+    rgb(4 8 24 / 0.74),
+    rgb(2 5 14 / 0.58) 58%,
+    rgb(0 0 0 / 0.36)
+  );
+  --d-night: 1;
+  --d-sun: 0;
+  --d-sun-shift: 15vh;
+}
+
 [data-daypart="dawn"] {
   --d-wash: linear-gradient(
     to bottom,
@@ -520,7 +534,6 @@ body {
   --d-sun-shift: 8vh;
 }
 
-:root,
 [data-daypart="night"] {
   --d-wash: linear-gradient(
     to bottom,
