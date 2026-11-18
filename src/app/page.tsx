@@ -1,5 +1,6 @@
 import { Countdown } from "@/components/Countdown";
 import { DaypartSwitcher } from "@/components/DaypartSwitcher";
+import { MusicPlayer } from "@/components/MusicPlayer";
 import { Scene } from "@/components/Scene";
 import { SeasonGlyph } from "@/components/SeasonGlyph";
 import { SeasonSwitcher } from "@/components/SeasonSwitcher";
@@ -13,6 +14,7 @@ export default function Home() {
       <SeasonSwitcher />
       <DaypartSwitcher />
       <SoundToggle />
+      <MusicPlayer />
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center gap-14 px-6 pb-20 pt-52 sm:gap-20 sm:pb-28 sm:pt-44">
         {/* Дөрвүүлээ зурагдаж, идэвхтэй нэг нь л харагдана. */}

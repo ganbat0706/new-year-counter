@@ -5,6 +5,7 @@ import {
   DAYPART_KEYS,
   DAYPART_STORAGE_KEY,
 } from "@/lib/dayparts";
+import { DEFAULT_MUSIC, MUSIC_STORAGE_KEY } from "@/lib/music";
 import { DEFAULT_SOUND, SOUND_STORAGE_KEY } from "@/lib/sound";
 import {
   SEASON_BY_MONTH,
@@ -66,6 +67,13 @@ const SOUND_SCRIPT = `(function(){try{var r=document.documentElement,v=localStor
   DEFAULT_SOUND,
 )})}catch(e){}})()`;
 
+/** Хөгжмийн горим — дуутай ижил зарчим. */
+const MUSIC_SCRIPT = `(function(){try{var r=document.documentElement,v=localStorage.getItem(${JSON.stringify(
+  MUSIC_STORAGE_KEY,
+)});r.setAttribute("data-music",v==="on"?"on":${JSON.stringify(
+  DEFAULT_MUSIC,
+)})}catch(e){}})()`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -75,13 +83,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-daypart="night"
       data-daypart-mode="auto"
       data-sound="off"
+      data-music="off"
       suppressHydrationWarning
       className={`${sora.variable} ${inter.variable} h-full antialiased`}
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `${SEASON_SCRIPT};${DAYPART_SCRIPT};${SOUND_SCRIPT}`,
+            __html: `${SEASON_SCRIPT};${DAYPART_SCRIPT};${SOUND_SCRIPT};${MUSIC_SCRIPT}`,
           }}
         />
       </head>
