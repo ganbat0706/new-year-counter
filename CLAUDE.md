@@ -81,6 +81,19 @@ Script-ийн сарын хүснэгт, түлхүүр, нэрс бүгд `SEAS
 шилждэг тул тэр нөхцөл хэзээ ч биелэхгүй. Үүнд зориулж
 `newYearJustArrived()` (1-р сарын 1-ний эхний цаг) байгаа.
 
+## Deploy (GitHub Pages)
+
+`main` руу push хийх бүрт `.github/workflows/deploy.yml` нь lint → build →
+Pages deploy хийнэ → https://ganbat0706.github.io/new-year-counter/
+
+Pages-ийн build нь `GITHUB_PAGES=1`-тэй ажилладаг. Энэ үед `next.config.ts`
+нь `output: "export"` ба `basePath: "/new-year-counter"`-г асааж, **PPR-ийг
+(`cacheComponents`, `partialPrefetching`) унтраана** — PPR нь export горимд
+ажиллахгүй (`Invariant: PPR cannot be enabled in export mode`). Локал `npm run
+dev` / `npm run build` дээр PPR хэвээр асаалттай. Иймд серверийн шинж чанар
+(dynamic route, server action, ISR) нэмбэл Pages-ийн build унана — тэр
+тохиолдолд өөр хостинг руу шилжүүлэх шаардлагатай.
+
 ## Бүтэц
 
 - `src/app/layout.tsx` — root layout, улирлын inline script, `Sora` →
