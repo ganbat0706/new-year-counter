@@ -478,6 +478,81 @@ body {
   );
 }
 
+/* ───────────────────────────────────────────────────────────────
+   Цагийн үе. `<html data-daypart>` нь улирлаас тусдаа тэнхлэг —
+   улирлын палитрыг хөндөхгүйгээр зөвхөн тэнгэр, огторгуйг өөрчилнө.
+   `--d-*` хувьсагчдыг доорх давхаргууд уншина.
+   ─────────────────────────────────────────────────────────────── */
+
+[data-daypart="dawn"] {
+  --d-wash: linear-gradient(
+    to bottom,
+    rgb(255 186 146 / 0.34),
+    rgb(255 142 176 / 0.2) 42%,
+    transparent 84%
+  );
+  --d-night: 0.28;
+  --d-sun: 1;
+  --d-sun-shift: 9vh;
+}
+
+[data-daypart="day"] {
+  --d-wash: linear-gradient(
+    to bottom,
+    rgb(148 214 255 / 0.36),
+    rgb(255 255 255 / 0.12) 52%,
+    transparent 88%
+  );
+  --d-night: 0;
+  --d-sun: 1;
+  --d-sun-shift: -5vh;
+}
+
+[data-daypart="dusk"] {
+  --d-wash: linear-gradient(
+    to bottom,
+    rgb(255 138 66 / 0.3),
+    rgb(126 54 126 / 0.26) 52%,
+    transparent 90%
+  );
+  --d-night: 0.5;
+  --d-sun: 1;
+  --d-sun-shift: 8vh;
+}
+
+:root,
+[data-daypart="night"] {
+  --d-wash: linear-gradient(
+    to bottom,
+    rgb(4 8 24 / 0.74),
+    rgb(2 5 14 / 0.58) 58%,
+    rgb(0 0 0 / 0.36)
+  );
+  --d-night: 1;
+  --d-sun: 0;
+  --d-sun-shift: 15vh;
+}
+
+.daypart-wash {
+  background-image: var(--d-wash);
+  transition: background-image 900ms ease;
+}
+
+/* Од, сар, туйлын гэрэл — харанхуйдах тусам тодорно. */
+.night-only {
+  opacity: var(--d-night);
+  transition: opacity 900ms ease;
+}
+
+/* Нар — шөнө жаргаж, өдөр дээшилнэ. */
+.celestial-sun {
+  opacity: var(--d-sun);
+  translate: 0 var(--d-sun-shift);
+  transition:
+    opacity 900ms ease,
+    translate 900ms ease;
+}
+
 /* Улирлын тайз ба текстүүд — идэвхтэй нэг нь л DOM-д "харагдана".
    Нуугдсан давхаргын анимаци зогсдог тул нэмэлт ачаалал өгөхгүй. */
 [data-scene] {
@@ -509,7 +584,12 @@ body {
 [data-season="summer"] .pill-summer,
 [data-season="autumn"] .pill-autumn,
 [data-season="winter"] .pill-winter,
-[data-season-mode="auto"] .pill-auto {
+[data-season-mode="auto"] .pill-auto,
+[data-daypart="dawn"] .pill-d-dawn,
+[data-daypart="day"] .pill-d-day,
+[data-daypart="dusk"] .pill-d-dusk,
+[data-daypart="night"] .pill-d-night,
+[data-daypart-mode="auto"] .pill-d-auto {
   color: var(--s-canvas);
   background-color: var(--s-accent);
   border-color: var(--s-accent);

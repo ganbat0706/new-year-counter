@@ -61,6 +61,24 @@ Script-ийн сарын хүснэгт, түлхүүр, нэрс бүгд `SEAS
 - React дотроос улирлыг унших бол `useSeason()` (`src/lib/useSeason.ts`) —
   `MutationObserver` + `useSyncExternalStore`.
 
+## Цагийн үеийн механизм
+
+Улирлаас **тусдаа тэнхлэг**: `<html data-daypart="dawn|day|dusk|night">` ба
+`data-daypart-mode`. Утгыг мөн `layout.tsx`-ийн inline script тавина — цагийн
+хүснэгт нь `DAYPART_BY_HOUR`, `DAYPART_KEYS`, `DAYPART_STORAGE_KEY`-ээс
+үүснэ (улирлынх шиг гараар бүү хуул). Зааг: 5 үүр, 8 өдөр, 17 бүрий, 20 шөнө.
+
+- React дотроос унших бол `useDaypart()` (`src/lib/useDaypart.ts`) —
+  `useSeason`-той ижил `MutationObserver` + `useSyncExternalStore` загвар.
+- Харагдац бүхэлдээ **CSS-ээр**: `[data-daypart]` блокууд `--d-wash`
+  (тэнгэрийн аяс), `--d-night` (од/сар/туйлын гэрлийн ил тод), `--d-sun`,
+  `--d-sun-shift` (нарны мандалт/жаргалт) хувьсагчийг өгнө. Эдгээрийг
+  `.daypart-wash`, `.night-only`, `.celestial-sun` классууд уншина.
+- Од, сар нь улирал бүрт давтагдахгүй — `Scene.tsx` дотор **нийтлэг нэг**
+  `night-only` давхарга, тайзнуудаас өмнө (модны ард зурагдахын тулд).
+- Улирлын `--s-*` палитрыг огт хөнддөггүй тул 4 улирал × 4 үе = 16 хослол
+  зөрчилгүй ажиллана.
+
 ## Тоолуурын логик
 
 `Countdown.tsx` нэг зэрэг гурван өөр цагийг харуулдаг — аль нь юунаас

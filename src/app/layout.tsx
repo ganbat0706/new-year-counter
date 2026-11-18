@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Sora } from "next/font/google";
 import {
+  DAYPART_BY_HOUR,
+  DAYPART_KEYS,
+  DAYPART_STORAGE_KEY,
+} from "@/lib/dayparts";
+import {
   SEASON_BY_MONTH,
   SEASON_KEYS,
   SEASON_STORAGE_KEY,
@@ -41,17 +46,35 @@ const SEASON_SCRIPT = `(function(){try{var r=document.documentElement,s=${JSON.s
   SEASON_KEYS,
 )}.indexOf(v)>-1){s=v;d="manual"}r.setAttribute("data-season",s);r.setAttribute("data-season-mode",d)}catch(e){}})()`;
 
+/**
+ * Улирлынхтай яг адил зарчим — зөвхөн сарын оронд цагаар. Цагийн хүснэгт,
+ * түлхүүр, нэрс нь `@/lib/dayparts`-оос гардаг тул гараар хуулах зүйл алга.
+ */
+const DAYPART_SCRIPT = `(function(){try{var r=document.documentElement,s=${JSON.stringify(
+  DAYPART_BY_HOUR,
+)}[new Date().getHours()],v=localStorage.getItem(${JSON.stringify(
+  DAYPART_STORAGE_KEY,
+)}),d="auto";if(${JSON.stringify(
+  DAYPART_KEYS,
+)}.indexOf(v)>-1){s=v;d="manual"}r.setAttribute("data-daypart",s);r.setAttribute("data-daypart-mode",d)}catch(e){}})()`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="mn"
       data-season="winter"
       data-season-mode="auto"
+      data-daypart="night"
+      data-daypart-mode="auto"
       suppressHydrationWarning
       className={`${sora.variable} ${inter.variable} h-full antialiased`}
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: SEASON_SCRIPT }} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `${SEASON_SCRIPT};${DAYPART_SCRIPT}`,
+          }}
+        />
       </head>
       <body className="flex min-h-full flex-col overflow-x-hidden">
         {children}

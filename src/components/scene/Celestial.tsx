@@ -3,7 +3,7 @@ import { seededRandom } from "@/lib/random";
 /** Шөнийн сар — тогоотой, эргэн тойрондоо туяатай. */
 export function Moon() {
   return (
-    <div className="absolute right-[12%] top-[9%] h-20 w-20 sm:right-[16%]">
+    <div className="celestial-moon absolute right-[12%] top-[9%] h-20 w-20 sm:right-[16%]">
       <div
         className="animate-halo absolute -inset-14 rounded-full blur-2xl"
         style={{
@@ -27,7 +27,7 @@ export function Moon() {
 export function Sun({ x, y, size }: { x: string; y: string; size: number }) {
   return (
     <div
-      className="absolute"
+      className="celestial-sun absolute"
       style={{
         left: x,
         top: y,

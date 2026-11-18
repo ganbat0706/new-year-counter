@@ -13,6 +13,9 @@ export function Sky() {
       <div className="sky sky-autumn" />
       <div className="sky sky-winter" />
 
+      {/* Цагийн үеийн аяс — дөрвөн тэнгэрийн дээгүүр нэг давхарга */}
+      <div className="daypart-wash absolute inset-0" />
+
       {/* Тэнгэрийн хаяанаас цацрах дулаан туяа */}
       <div
         className="animate-breathe absolute inset-x-0 bottom-0 h-[55vh]"

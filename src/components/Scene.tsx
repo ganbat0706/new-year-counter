@@ -144,10 +144,12 @@ function AutumnScene() {
 function WinterScene() {
   return (
     <>
-      <Stars seed={8_101} count={70} />
-      <ShootingStars />
-      <Aurora />
-      <Moon />
+      {/* Туйлын гэрэл, гулсах од — зөвхөн харанхуй үед */}
+      <div className="night-only absolute inset-0">
+        <ShootingStars />
+        <Aurora />
+      </div>
+      <Sun x="70%" y="64%" size={8} />
       <Forest layers={forestLayers(8_201, "pine", [0, 0, 0])} />
       <Ground height="16vh" />
       <Particles shape="snow" layers={fallLayers(8_301, 1)} />
@@ -176,6 +178,14 @@ export function Scene() {
         aria-hidden
         className="pointer-events-none fixed inset-0 -z-20 overflow-hidden"
       >
+        {/* Од, сар нь улирал бүрт давтагдахгүй — дөрвүүлд нь нийтлэг нэг
+            давхарга, зөвхөн харанхуй үед асна. Модны ард зурагдахын тулд
+            тайзнуудаас өмнө байна. */}
+        <div className="night-only absolute inset-0">
+          <Stars seed={8_101} count={70} />
+          <Moon />
+        </div>
+
         {Object.entries(SCENES).map(([key, SeasonScene]) => (
           <div
             key={key}
