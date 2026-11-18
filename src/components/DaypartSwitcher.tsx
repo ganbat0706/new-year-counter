@@ -57,9 +57,9 @@ export function DaypartSwitcher() {
   return (
     <nav
       aria-label="Цагийн үе сонгох"
-      className="fixed inset-x-0 top-0 z-30 flex justify-center px-4 pt-[7rem] sm:pt-[4.25rem]"
+      className="pointer-events-none fixed inset-x-0 top-0 z-30 flex justify-center px-4 pt-[7rem] sm:pt-[4.25rem]"
     >
-      <div className="glass flex items-center gap-1 rounded-full p-1 text-xs sm:gap-1.5 sm:text-sm">
+      <div className="glass pointer-events-auto flex items-center gap-1 rounded-full p-1 text-xs sm:gap-1.5 sm:text-sm">
         {DAYPART_LIST.map((item) => (
           <button
             key={item.key}
