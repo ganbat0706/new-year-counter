@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   DEFAULT_MUSIC,
+  EMBED_BLOCKED_CODES,
   MUSIC_STORAGE_KEY,
   MUSIC_VOLUME,
   TRACKS,
   isMusicPref,
   type MusicPref,
 } from "@/lib/music";
+import type { SeasonKey } from "@/lib/seasons";
 import { useSeason } from "@/lib/useSeason";
 
 /* YouTube IFrame API-ийн хэрэгтэй хэсгийн тодорхойлолт — багц нэмэхгүйн тулд. */
@@ -26,7 +28,11 @@ type YtApi = {
       host?: string;
       videoId: string;
       playerVars: Record<string, string | number>;
-      events: { onReady: () => void; onStateChange: (e: { data: number }) => void };
+      events: {
+        onReady: () => void;
+        onStateChange: (e: { data: number }) => void;
+        onError: (e: { data: number }) => void;
+      };
     },
   ) => YtPlayer;
 };
@@ -100,9 +106,12 @@ export function MusicPlayer() {
   const season = useSeason();
   const mount = useRef<HTMLDivElement>(null);
   const player = useRef<YtPlayer | null>(null);
+  // Алдааг бичлэгийн id-гаар санана — улирал солигдоход өөрөө "цэвэрлэгдэнэ".
+  const [failedId, setFailedId] = useState<string | null>(null);
 
   const track = TRACKS[season];
   const on = pref === "on";
+  const failed = failedId === track.id;
 
   useEffect(() => {
     if (!on) {
@@ -133,6 +142,17 @@ export function MusicPlayer() {
           // 0 = дууссан: нэг бичлэгийг давтана
           onStateChange: (event) => {
             if (event.data === 0) player.current?.playVideo();
+            if (event.data === 1) setFailedId(null);
+          },
+          // Зарим бичлэгийг эзэмшигч нь embed дотор тоглуулахыг хориглодог
+          // (101/150). Тэр үед чимээгүй бүтэлгүйтэхийн оронд YouTube руу
+          // хөтлөх холбоос үзүүлнэ.
+          onError: (event) => {
+            if (EMBED_BLOCKED_CODES.includes(event.data)) {
+              setFailedId(document.documentElement.dataset.season
+                ? TRACKS[document.documentElement.dataset.season as SeasonKey].id
+                : null);
+            }
           },
         },
       });
@@ -158,6 +178,21 @@ export function MusicPlayer() {
         <div ref={mount} />
       </div>
 
+      {on && failed ? (
+        <a
+          href={`https://www.youtube.com/watch?v=${track.id}`}
+          target="_blank"
+          rel="noreferrer"
+          title="Энэ бичлэгийг сайт дотор тоглуулахыг зөвшөөрөөгүй байна"
+          className="glass fixed bottom-[4.6rem] right-5 z-30 flex max-w-[70vw] items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-ink-soft transition-colors hover:text-ink sm:text-sm"
+        >
+          <span aria-hidden className="text-base leading-none">
+            ↗
+          </span>
+          <span className="truncate">YouTube дээр сонсох</span>
+        </a>
+      ) : null}
+
       <button
         type="button"
         onClick={() => apply(on ? "off" : "on")}
@@ -167,7 +202,9 @@ export function MusicPlayer() {
             ? "Хөгжим унтраах"
             : `${track.title} — ${track.artist} (YouTube дээрээс)`
         }
-        className="glass fixed bottom-[4.6rem] right-5 z-30 flex max-w-[70vw] cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-ink-soft transition-colors hover:text-ink sm:text-sm"
+        className={`glass fixed ${
+          on && failed ? "bottom-[8.2rem]" : "bottom-[4.6rem]"
+        } right-5 z-30 flex max-w-[70vw] cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-ink-soft transition-colors hover:text-ink sm:text-sm`}
       >
         <span aria-hidden className="text-base leading-none">
           {on ? "⏸" : "🎵"}

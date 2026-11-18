@@ -22,7 +22,9 @@ export const TRACKS: Record<SeasonKey, Track> = {
     artist: "The Beatles",
   },
   summer: {
-    id: "B4iH9T__FJU",
+    // Анхны сонголт (B4iH9T__FJU, "Topic" суваг) embed дотор тоглохыг
+    // хориглосон байсан — YouTube алдаа 150.
+    id: "l0GN40EL1VU",
     title: "Summer (Kikujiro)",
     artist: "Joe Hisaishi",
   },
@@ -49,6 +51,9 @@ export const MUSIC_STORAGE_KEY = "music";
 
 /** Чанга (0–100). Орчны дуутай зэрэг тоглоход дарж дуугарахгүйн тулд намхан. */
 export const MUSIC_VOLUME = 35;
+
+/** YouTube-ийн "энэ бичлэгийг embed дотор тоглуулж болохгүй" алдаанууд. */
+export const EMBED_BLOCKED_CODES = [101, 150];
 
 export function isMusicPref(value: unknown): value is MusicPref {
   return (MUSIC_KEYS as readonly unknown[]).includes(value);
