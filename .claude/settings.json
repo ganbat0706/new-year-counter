@@ -1,0 +1,42 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3",
+            "args": ["${CLAUDE_PROJECT_DIR}/scripts/claude-hooks/teams_notify.py"],
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3",
+            "args": ["${CLAUDE_PROJECT_DIR}/scripts/claude-hooks/teams_notify.py"],
+            "async": true,
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3",
+            "args": ["${CLAUDE_PROJECT_DIR}/scripts/claude-hooks/teams_notify.py"],
+            "timeout": 15,
+            "statusMessage": "Teams-д мэдэгдэж байна…"
+          }
+        ]
+      }
+    ]
+  }
+}

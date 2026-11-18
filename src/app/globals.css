@@ -1,26 +1,568 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ───────────────────────────────────────────────────────────────
+   Улирлын палитр. Бүх өнгө `--s-*` хувьсагчаар орж ирэх ба
+   `<html data-season>` солигдоход бүхэл хуудас дагаж өөрчлөгдөнө.
+   ─────────────────────────────────────────────────────────────── */
+
+:root,
+[data-season="winter"] {
+  --s-canvas: #03120d;
+  --s-ink: #fff8ec;
+  --s-ink-soft: #d8c6a7;
+  --s-accent: #ffd98a;
+  --s-accent-2: #7fd1a8;
+  --s-far: #104532;
+  --s-mid: #0a3326;
+  --s-near: #03120d;
+  --s-glow: 245 181 71;
+  --s-ground: 255 248 236;
 }
 
+[data-season="spring"] {
+  --s-canvas: #150b26;
+  --s-ink: #fff2f8;
+  --s-ink-soft: #e3c4da;
+  --s-accent: #ffb3d1;
+  --s-accent-2: #9ff0c9;
+  --s-far: #53305f;
+  --s-mid: #3a1f4c;
+  --s-near: #1c1030;
+  --s-glow: 255 163 199;
+  --s-ground: 255 205 230;
+}
+
+[data-season="summer"] {
+  --s-canvas: #041d26;
+  --s-ink: #fefce9;
+  --s-ink-soft: #cfd9a8;
+  --s-accent: #ffd166;
+  --s-accent-2: #6ee7b7;
+  --s-far: #22795a;
+  --s-mid: #145741;
+  --s-near: #062a24;
+  --s-glow: 255 209 102;
+  --s-ground: 126 231 183;
+}
+
+[data-season="autumn"] {
+  --s-canvas: #1a0c08;
+  --s-ink: #fff1dd;
+  --s-ink-soft: #e0bc95;
+  --s-accent: #ff9f45;
+  --s-accent-2: #e5533d;
+  --s-far: #75401f;
+  --s-mid: #4e2814;
+  --s-near: #22110a;
+  --s-glow: 255 159 69;
+  --s-ground: 236 160 78;
+}
+
+/* `inline` — утгыг хуулахгүй, `var()` хэвээр гаргадаг тул улирал
+   солигдоход Tailwind-ийн класс бүр шууд дагана. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-canvas: var(--s-canvas);
+  --color-ink: var(--s-ink);
+  --color-ink-soft: var(--s-ink-soft);
+  --color-accent: var(--s-accent);
+  --color-accent-2: var(--s-accent-2);
+  --color-far: var(--s-far);
+  --color-mid: var(--s-mid);
+  --color-near: var(--s-near);
+  --color-glow: rgb(var(--s-glow));
+  --color-ground: rgb(var(--s-ground));
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --animate-fall: fall linear infinite;
+  --animate-flutter: flutter ease-in-out infinite alternate;
+  --animate-mote: mote-rise linear infinite;
+  --animate-blink: bulb-blink 3.4s ease-in-out infinite;
+  --animate-bokeh: bokeh-drift 18s ease-in-out infinite;
+  --animate-sway: tree-sway 9s ease-in-out infinite;
+  --animate-grass: grass-sway 4.5s ease-in-out infinite alternate;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-rise: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade: fade-in 1.2s ease-out both;
+  --animate-twinkle: twinkle ease-in-out infinite;
+  --animate-aurora: aurora-sweep ease-in-out infinite;
+  --animate-cloud: cloud-drift linear infinite;
+  --animate-fly: bird-fly linear infinite;
+  --animate-flap: wing-flap ease-in-out infinite alternate;
+  --animate-rays: ray-spin 120s linear infinite;
+  --animate-halo: halo-pulse 8s ease-in-out infinite;
+  --animate-firefly: firefly-blink ease-in-out infinite;
+  --animate-shoot: shooting-star ease-in infinite;
+  --animate-sheen: sheen 8s ease-in-out infinite;
+  --animate-tick: tick 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-mist: mist-drift linear infinite;
+  --animate-breathe: breathe 11s ease-in-out infinite;
+  --animate-wander: wander ease-in-out infinite;
+}
+
+/* ── Унах/хөвөх хэсгүүд ───────────────────────────────────────── */
+
+/* Босоо уналт. Хажуугийн найгалт нь дотоод элемент дээр тусдаа явна. */
+@keyframes fall {
+  from {
+    transform: translate3d(0, -14vh, 0);
+  }
+  to {
+    transform: translate3d(0, 114vh, 0);
   }
 }
 
+/* Салхинд найгах + эргэлдэх — `alternate` тул хоёр тал руугаа савлана. */
+@keyframes flutter {
+  from {
+    transform: translateX(calc(var(--drift, 2rem) * -1))
+      rotate(var(--spin-from, 0deg));
+  }
+  to {
+    transform: translateX(var(--drift, 2rem)) rotate(var(--spin-to, 0deg));
+  }
+}
+
+/* Цэцгийн тоос, үр — доошоо биш, дээшээ хөвнө. */
+@keyframes mote-rise {
+  0% {
+    transform: translate3d(0, 108vh, 0) scale(0.5);
+    opacity: 0;
+  }
+  15%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift, 4rem), -12vh, 0) scale(1);
+    opacity: 0;
+  }
+}
+
+/* ── Гэрэл ────────────────────────────────────────────────────── */
+
+@keyframes bulb-blink {
+  0%,
+  100% {
+    opacity: 0.35;
+    box-shadow: 0 0 6px 1px currentColor;
+  }
+  50% {
+    opacity: 1;
+    box-shadow:
+      0 0 10px 2px currentColor,
+      0 0 26px 6px currentColor;
+  }
+}
+
+@keyframes bokeh-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.16;
+  }
+  50% {
+    transform: translate3d(2.5rem, -3.5rem, 0) scale(1.25);
+    opacity: 0.48;
+  }
+}
+
+/* Галт шувуу — хөвөхийн хажуугаар анивчина. */
+@keyframes firefly-blink {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.6);
+  }
+  20% {
+    opacity: 1;
+    transform: translate3d(1rem, -1.5rem, 0) scale(1);
+  }
+  45% {
+    opacity: 0.1;
+  }
+  70% {
+    opacity: 0.9;
+    transform: translate3d(-1.5rem, -3rem, 0) scale(1.1);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes shooting-star {
+  0%,
+  86% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  88% {
+    opacity: 1;
+  }
+  96%,
+  100% {
+    opacity: 0;
+    transform: translate3d(42vw, 26vh, 0);
+  }
+}
+
+/* ── Тэнгэр, агаар ────────────────────────────────────────────── */
+
+@keyframes aurora-sweep {
+  0%,
+  100% {
+    transform: translate3d(-8%, 0, 0) skewX(-14deg) scaleY(0.85);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(8%, -2%, 0) skewX(10deg) scaleY(1.15);
+    opacity: 0.75;
+  }
+}
+
+@keyframes cloud-drift {
+  from {
+    transform: translate3d(-30vw, 0, 0);
+  }
+  to {
+    transform: translate3d(130vw, 0, 0);
+  }
+}
+
+@keyframes mist-drift {
+  0%,
+  100% {
+    transform: translate3d(-6%, 0, 0);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate3d(6%, -0.8vh, 0);
+    opacity: 0.6;
+  }
+}
+
+@keyframes ray-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes halo-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.14);
+    opacity: 0.9;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.06);
+  }
+}
+
+/* Эрвээхэйн замбараагүй аялал */
+@keyframes wander {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(7vw, -5vh, 0);
+  }
+  50% {
+    transform: translate3d(13vw, 2vh, 0);
+  }
+  75% {
+    transform: translate3d(5vw, 7vh, 0);
+  }
+}
+
+/* ── Шувуу ────────────────────────────────────────────────────── */
+
+@keyframes bird-fly {
+  0% {
+    transform: translate3d(-18vw, 4vh, 0);
+  }
+  50% {
+    transform: translate3d(50vw, -2vh, 0);
+  }
+  100% {
+    transform: translate3d(118vw, 3vh, 0);
+  }
+}
+
+@keyframes wing-flap {
+  from {
+    transform: scaleY(0.35);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* ── Ургамал ──────────────────────────────────────────────────── */
+
+@keyframes tree-sway {
+  0%,
+  100% {
+    transform: rotate(-0.35deg);
+  }
+  50% {
+    transform: rotate(0.35deg);
+  }
+}
+
+@keyframes grass-sway {
+  from {
+    transform: rotate(-5deg) scaleY(0.97);
+  }
+  to {
+    transform: rotate(5deg) scaleY(1.03);
+  }
+}
+
+/* ── Интерфэйс ────────────────────────────────────────────────── */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.5rem);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.97);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Гарчгийн дээгүүр гүйх гэрлийн туяа */
+@keyframes sheen {
+  0%,
+  100% {
+    background-position: -130% 50%;
+  }
+  60%,
+  to {
+    background-position: 230% 50%;
+  }
+}
+
+/* Тоо солигдоход нэг удаа цохилно */
+@keyframes tick {
+  from {
+    opacity: 0;
+    transform: translateY(0.55em) rotateX(-70deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Үндсэн хуудас
+   ─────────────────────────────────────────────────────────────── */
+
+html {
+  color-scheme: dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--s-canvas);
+  color: var(--s-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 900ms ease,
+    color 900ms ease;
+}
+
+/* Улирлын тэнгэрүүд дээр дээрээсээ давхарлан, зөвхөн ил тодоороо
+   сольцдог тул шилжилт нь зөөлөн. */
+.sky {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+[data-season="spring"] .sky-spring,
+[data-season="summer"] .sky-summer,
+[data-season="autumn"] .sky-autumn,
+[data-season="winter"] .sky-winter {
+  opacity: 1;
+}
+
+.sky-spring {
+  background: radial-gradient(
+    125% 95% at 50% 102%,
+    #ffc2dc 0%,
+    #e87fb4 14%,
+    #8b4e9c 38%,
+    #3d1f5c 66%,
+    #150b26 100%
+  );
+}
+
+.sky-summer {
+  background: radial-gradient(
+    125% 95% at 50% 102%,
+    #ffe6a3 0%,
+    #f6a44f 16%,
+    #4f9f7a 46%,
+    #11586a 76%,
+    #041d26 100%
+  );
+}
+
+.sky-autumn {
+  background: radial-gradient(
+    125% 95% at 50% 102%,
+    #ffd089 0%,
+    #ef8043 18%,
+    #a4492b 44%,
+    #4a1f12 74%,
+    #1a0c08 100%
+  );
+}
+
+.sky-winter {
+  background: radial-gradient(
+    125% 85% at 50% 8%,
+    #10452f 0%,
+    #06231a 42%,
+    #03120d 100%
+  );
+}
+
+/* Улирлын тайз ба текстүүд — идэвхтэй нэг нь л DOM-д "харагдана".
+   Нуугдсан давхаргын анимаци зогсдог тул нэмэлт ачаалал өгөхгүй. */
+[data-scene] {
+  display: none;
+}
+
+[data-season="spring"] [data-scene="spring"],
+[data-season="summer"] [data-scene="summer"],
+[data-season="autumn"] [data-scene="autumn"],
+[data-season="winter"] [data-scene="winter"] {
+  display: block;
+}
+
+/* Улирал сонгох товчнууд */
+.pill {
+  transition:
+    color 300ms ease,
+    background-color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease,
+    transform 300ms ease;
+}
+
+.pill:hover {
+  transform: translateY(-1px);
+}
+
+[data-season="spring"] .pill-spring,
+[data-season="summer"] .pill-summer,
+[data-season="autumn"] .pill-autumn,
+[data-season="winter"] .pill-winter,
+[data-season-mode="auto"] .pill-auto {
+  color: var(--s-canvas);
+  background-color: var(--s-accent);
+  border-color: var(--s-accent);
+  box-shadow: 0 0 24px -4px rgb(var(--s-glow) / 0.75);
+}
+
+/* Дулаан шилэн гадаргуу — хүрээ, туяа нь улирлаасаа өнгөө авна. */
+@utility glass {
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--s-accent) 13%, transparent),
+    color-mix(in oklab, var(--s-near) 80%, transparent)
+  );
+  border: 1px solid color-mix(in oklab, var(--s-accent) 26%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--s-ink) 24%, transparent),
+    0 24px 60px -24px color-mix(in oklab, var(--s-canvas) 95%, transparent),
+    0 0 40px -18px rgb(var(--s-glow) / 0.6);
+  transition:
+    background 700ms ease,
+    border-color 700ms ease,
+    box-shadow 700ms ease;
+}
+
+/* Гарчгийн гялалзсан градиент */
+@utility sheen-text {
+  background-image: linear-gradient(
+    100deg,
+    var(--s-ink) 0%,
+    var(--s-accent) 28%,
+    var(--s-ink) 42%,
+    var(--s-accent-2) 62%,
+    var(--s-ink) 84%
+  );
+  background-size: 220% 100%;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Анимаци зогсоход унах/нисэх давхаргууд `fill-mode`-гүй тул суурь
+     байрлалдаа буцаж овоордог (бүх цас дээд ирмэг дээр нэг эгнээ, үүл
+     бүгд зүүн захад). Тиймээс харуулахын оронд бүрмөсөн нуув. */
+  .motion-only {
+    display: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
